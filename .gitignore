@@ -1,0 +1,12 @@
+__pycache__/
+media/
+#migrations/
+/venv/
+# static/
+/tmp
+.idea/
+.vscode
+private
+.env.eropa
+docker-compose_eropa.yml
+*.mo
