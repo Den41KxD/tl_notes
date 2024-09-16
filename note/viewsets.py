@@ -10,3 +10,5 @@ class NoteViewSet(ModelViewSet):
 	serializer_class = NoteSerializer
 	permission_classes = (IsAuthenticated,)
 	
+	def perform_create(self, serializer):
+		serializer.save(created_by=self.request.user)

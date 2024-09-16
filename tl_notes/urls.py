@@ -21,6 +21,7 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('page/', include('note.urls')),
+    path('user/', include('user.urls')),
     path('', include('tl_notes.swagger_urls'))
-
+    
 ]
