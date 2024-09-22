@@ -10,3 +10,5 @@ private
 .env.eropa
 docker-compose_eropa.yml
 *.mo
+.env
+.localenv
