@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'components/date_filter.html' %}
+
+    <h2>Записи</h2>
+    {% for note in notes %}
+        <div>
+            <p>{{ note.text }}</p>
+            <p><small>Создано: {{ note.created_at }}</small></p>
+        </div>
+    {% endfor %}
+
+    
+{% endblock %}

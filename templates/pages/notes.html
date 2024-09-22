@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div id="note-popup" class="popup">
+        <div class="popup-content">
+            <span class="close-popup">&times;</span>
+            <br>
+            <br>
+            <textarea id="popup-text"></textarea>
+            <button type="button" class="save-popup">Save</button>
+        </div>
+    </div>
+    {% include 'components/date_filter.html' %}
+    <br>
+    <button onclick="generateReport(this)">{% trans 'Generate report' %}</button>
+    
+    <br>
+    
+    <div class="table__header">
+        <div class="note-text">Текст заметки</div>
+        <div class="universal-column">Дата создания</div>
+        <div class="universal-column">Task ID</div>
+    </div>
+    <div>
+        {% for note in object_list %}
+            {% include 'components/note.html' %}
+        {% endfor %}
+    </div>
+{% endblock %}

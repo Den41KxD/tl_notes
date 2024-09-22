@@ -13,6 +13,9 @@ import os
 from pathlib import Path
 from datetime import timedelta
 
+from django.utils.translation import gettext_lazy as _
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-i78#o1=v&(8a*z0w5@t70joii$ayd2*^x3(6q%tef!8cu(ka(u"
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -43,12 +46,27 @@ INSTALLED_APPS = [
     'rest_framework',
 	'rest_framework_simplejwt',
 	'drf_yasg',
+	'django_ckeditor_5',
     
     "note",
     "user",
     "base_files"
     
 ]
+
+CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
+DJANGO_CKEDITOR_5_CONFIGS = {
+	'default': {
+		'toolbar': 'full',
+		'height': 300,
+		'width': '100%',
+		'remove_dialog_tabs': 'image:advanced;link:advanced',
+		'stylesSet': [
+			{'name': 'Custom Style', 'element': 'h3', 'attributes': {'class': 'custom'}},
+		]
+	},
+}
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -58,6 +76,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = "tl_notes.urls"
@@ -74,6 +93,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+	            'tl_notes.context_processors.language_code',
             ],
         },
     },
@@ -88,10 +108,10 @@ WSGI_APPLICATION = "tl_notes.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get("DB_PSQL_NAME", 'tlnotes'),
-        'USER': os.environ.get("DB_PSQL_USER", 'tlnotes_admin'),
-        'PASSWORD': os.environ.get("DB_PSQL_PASSWORD", 'tlnotespass'),
-        'HOST': os.environ.get("DB_PSQL_HOST", 'localhost'),
+        'NAME': os.environ.get("DB_PSQL_NAME"),
+        'USER': os.environ.get("DB_PSQL_USER"),
+        'PASSWORD': os.environ.get("DB_PSQL_PASSWORD"),
+        'HOST': os.environ.get("DB_PSQL_HOST"),
         'PORT': '5432',
     }
 }
@@ -119,19 +139,43 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
 
-USE_I18N = True
+# settings.py
+LANGUAGE_CODE = 'en'
 
+USE_I18N = True
+USE_L10N = True
 USE_TZ = True
+
+LANGUAGES = [
+	('en', _('English')),
+	('ru', _('Russian')),
+	('uk', _('Ukrainian')),
+	('ro', _('Romanian')),
+]
+
+LOCALE_PATHS = [
+	BASE_DIR / 'locale/',
+]
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR.joinpath('static')
+
+# # Additional locations of static files
+# STATICFILES_DIRS = [
+# 	os.path.join(BASE_DIR, 'static'),
+# ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR.joinpath('media')
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
+MODELTRANSLATION_AUTO_POPULATE = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -143,11 +187,18 @@ AUTH_USER_MODEL = 'user.User'
 
 REST_FRAMEWORK = {
 	'DEFAULT_AUTHENTICATION_CLASSES': (
+		'rest_framework.authentication.SessionAuthentication',
+		'rest_framework.authentication.BasicAuthentication',
 		'rest_framework_simplejwt.authentication.JWTAuthentication',
 	),
 }
 
 SIMPLE_JWT = {
-	'ACCESS_TOKEN_LIFETIME': timedelta(days=30),  # 20 лет
-	'REFRESH_TOKEN_LIFETIME': timedelta(days=60),  # 20 лет, при необходимости
+	'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
+	'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
 }
+
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+
+CELERY_BROKER_URL = os.environ.get("REDIS_URL", 'redis://redis:6379/') + '1'
+CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL", 'redis://redis:6379/') + '1'

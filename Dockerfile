@@ -7,6 +7,9 @@ WORKDIR /app
 # Копируем файл зависимостей в контейнер
 COPY requirements.txt .
 
+RUN pip install gunicorn
+
+RUN apt-get update && apt-get install -y netcat-openbsd && rm -rf /var/lib/apt/lists/*
 # Устанавливаем зависимости
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -17,5 +20,5 @@ COPY . .
 EXPOSE 8005
 
 # Команда для запуска приложения
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8005"]
+CMD ["./entrypoint.sh", "db", "5432"]
 

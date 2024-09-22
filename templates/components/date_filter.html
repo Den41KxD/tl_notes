@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<div class="date-filter">
+    <label for="start_datetime">Дата и время начала:</label>
+    <input type="datetime-local" id="start_datetime" name="start_datetime" value="{{ request.GET.start_datetime }}">
+    <br>
+
+    <label for="end_datetime">Дата и время окончания:</label>
+    <input type="datetime-local" id="end_datetime" name="end_datetime" value="{{ request.GET.end_datetime }}">
+    <br>
+    <button type="button" onclick="filterRecords()">{% trans 'Filter' %}</button>
+
+</div>

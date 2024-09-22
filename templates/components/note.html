@@ -1,0 +1,7 @@
+<div class="note__row" data-field-id="{{ note.id }}">
+{#    <div class="note__column note-text">{{ note.text }}</div>#}
+{#    <div class="note__column note-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aperiam consequuntur corporis deserunt dignissimos doloremque ex fugit incidunt inventore ipsum laboriosam numquam possimus quis, quod suscipit tenetur voluptas, voluptatibus. Ab aliquam amet, at consequuntur deleniti deserunt doloribus ducimus ea eaque facilis, id inventore ipsam labore magni molestias mollitia nam nobis, pariatur placeat quo recusandae repellat reprehenderit sint totam veritatis. Accusamus accusantium adipisci alias aliquid animi architecto atque autem delectus eaque eius eos exercitationem facere fuga fugiat fugit id illo impedit ipsam maiores maxime modi molestiae molestias porro, quam quas quibusdam recusandae repudiandae sed sequi tempora, veniam vero vitae, voluptas! Ut.</div>#}
+    <div class="note__column note-text" data-full-text="{{ note.text }}" data-field-id="{{ note.id }}" >{{ note.text }}</div>
+    <div class="note__column universal-column">{{ note.created_at }}</div>
+    <div class="note__column universal-column"><a href="{{ note.task_url }}">{{ note.task_id }}</a></div>
+</div>
