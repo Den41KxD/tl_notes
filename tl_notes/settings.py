@@ -202,3 +202,5 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 CELERY_BROKER_URL = os.environ.get("REDIS_URL", 'redis://redis:6379/') + '1'
 CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL", 'redis://redis:6379/') + '1'
+
+APPEND_SLASH = False
