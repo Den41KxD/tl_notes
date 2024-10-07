@@ -18,18 +18,29 @@ class StatisticGenerator:
 		
 	def start_generate_report(self, start_time: datetime, end_time: datetime) -> dict:
 		queryset = Note.objects.filter(created_by=self.user)
-		if start_time and end_time :
-			queryset=queryset.filter(
-				created_at__range=(start_time, end_time)).order_by('created_at')
+		
+		if start_time and end_time:
+			if timezone.is_naive(start_time):
+				start_time = timezone.make_aware(start_time, timezone.get_default_timezone())
+			if timezone.is_naive(end_time):
+				end_time = timezone.make_aware(end_time, timezone.get_default_timezone())
+			
+			queryset = queryset.filter(created_at__range=(start_time, end_time)).order_by('created_at')
+		
 		formatted_notes = []
 		preview_note = None
+		
 		for count, i in enumerate(queryset):
 			if not count:
 				note_text = f"Начало рабочего дня с  {i.text}"
 				formatted_notes.append(note_text)
 				preview_note = i
 				continue
-			note_text = f"[{preview_note.created_at.strftime('%H:%M')}-{i.created_at.strftime('%H:%M')}] {i.text}"
+			
+			start_time_str = timezone.localtime(preview_note.created_at).strftime('%H:%M')
+			end_time_str = timezone.localtime(i.created_at).strftime('%H:%M')
+			
+			note_text = f"[{start_time_str}-{end_time_str}] {i.text}"
 			preview_note = i
 			
 			if i.task_id:
