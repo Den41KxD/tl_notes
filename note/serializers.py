@@ -4,7 +4,7 @@ from note.models import Note
 
 
 class NoteSerializer(serializers.ModelSerializer):
-	task_id = serializers.IntegerField(required=False)
+	task_id = serializers.IntegerField(required=False, allow_null=True)
 	class Meta:
 		model = Note
 		fields = '__all__'
