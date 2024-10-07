@@ -18,7 +18,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.i18n import i18n_patterns
-from django.utils.translation import gettext_lazy as _
+from django_ckeditor_5.views import upload_file
 from django.conf.urls.static import static
 
 
@@ -33,6 +33,7 @@ path("admin/", admin.site.urls),
     path('', include('base_files.urls')),
     path('', include('tl_notes.swagger_urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('ckeditor/upload/', upload_file, name='ck_editor_5_upload_file'),
 
 )
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
