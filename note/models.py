@@ -11,7 +11,7 @@ class Note(models.Model):
     text = CKEditor5Field('Text', config_name='default')
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notes')
     is_read = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_created=True)
     task_id = models.CharField(max_length=100, verbose_name=_("Task ID"), blank=True)
     
     
