@@ -139,9 +139,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-TIME_ZONE = "UTC"
+TIME_ZONE = 'Europe/Kiev'
 
-# settings.py
+
 LANGUAGE_CODE = 'en'
 
 USE_I18N = True
@@ -176,6 +176,7 @@ MEDIA_ROOT = BASE_DIR.joinpath('media')
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
 MODELTRANSLATION_AUTO_POPULATE = True
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
