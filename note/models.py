@@ -1,4 +1,4 @@
-import random
+from django.utils import timezone
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -11,7 +11,7 @@ class Note(models.Model):
     text = CKEditor5Field('Text', config_name='default')
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notes')
     is_read = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_created=True, auto_now_add=True, verbose_name=_("Created at"))
+    created_at = models.DateTimeField(null=True, verbose_name=_("Created at"))
     task_id = models.CharField(max_length=100, verbose_name=_("Task ID"), blank=True, null=True)
     
     
@@ -21,6 +21,11 @@ class Note(models.Model):
     def __str__(self):
         return self.text[:50]
     
+    def save(self, *args, **kwargs):
+        if not self.created_at:
+            self.created_at = timezone.now()
+        super().save(*args, **kwargs)
+        
     
 class DailyReport(models.Model):
     text = models.TextField()
